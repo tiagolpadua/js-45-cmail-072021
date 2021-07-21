@@ -8,12 +8,12 @@ import { Component } from '@angular/core';
 export class AppComponent {
   private _isNewEmailFormOpen = false;
 
-  formCadastro = {
-    email: '',
+  emailList: any = [];
+
+  email = {
+    destinatario: '',
     assunto: '',
-    categoria: '',
-    mensagem: '',
-    data: ''
+    conteudo: ''
   }
 
   get isNewEmailFormOpen() {
@@ -22,7 +22,13 @@ export class AppComponent {
 
   cadastrar($event: Event) {
     $event.preventDefault();
-    console.log(this.formCadastro);
+    this.emailList.push(this.email);
+
+    this.email = {
+      destinatario: '',
+      assunto: '',
+      conteudo: '',
+    }
   }
 
   mostraValor($event: any) {
