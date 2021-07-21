@@ -6,5 +6,32 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'meu cmail';
+  private _isNewEmailFormOpen = false;
+
+  formCadastro = {
+    email: '',
+    assunto: '',
+    categoria: '',
+    mensagem: '',
+    data: ''
+  }
+
+  get isNewEmailFormOpen() {
+    return this._isNewEmailFormOpen;
+  }
+
+  cadastrar($event: Event) {
+    $event.preventDefault();
+    console.log(this.formCadastro);
+  }
+
+  mostraValor($event: any) {
+    if ($event.target) {
+      console.log($event.target.value);
+    }
+  }
+
+  toggleNewEmailForm() {
+    this._isNewEmailFormOpen = !this.isNewEmailFormOpen
+  }
 }
