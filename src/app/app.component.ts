@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -20,8 +21,13 @@ export class AppComponent {
     return this._isNewEmailFormOpen;
   }
 
-  cadastrar($event: Event) {
-    $event.preventDefault();
+  handleNewEmail(formEmail: NgForm) {
+    console.log(formEmail);
+
+    if (formEmail.invalid) {
+      return;
+    }
+
     this.emailList.push(this.email);
 
     this.email = {
@@ -29,6 +35,8 @@ export class AppComponent {
       assunto: '',
       conteudo: '',
     }
+
+    formEmail.resetForm();
   }
 
   mostraValor($event: any) {
