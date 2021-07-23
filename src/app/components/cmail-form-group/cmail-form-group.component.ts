@@ -12,12 +12,12 @@ export class CmailFormGroupComponent implements OnInit {
   idCampo = '';
 
   constructor(private elemento: ElementRef) {
-    // const campo = this.elemento.nativeElement.querySelector('input')
-    // this.textoDaLabel = campo.name.replace(campo.name[0], campo.name[0].toUpperCase());
-    // this.idCampo = campo.name;
   }
 
   ngOnInit(): void {
+    const campo = this.elemento.nativeElement.querySelector('input');
+    this.textoDaLabel = campo.name.replace(campo.name[0], campo.name[0].toUpperCase());
+    this.idCampo = campo.name;
   }
 
 }

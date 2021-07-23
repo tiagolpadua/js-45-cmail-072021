@@ -6,27 +6,8 @@ import { NgForm } from '@angular/forms';
     templateUrl: './caixa-de-entrada.component.html',
     styleUrls: []
 })
-export class CaixaDeEntradaComponent implements OnInit, OnDestroy, DoCheck {
+export class CaixaDeEntradaComponent {
     private _isNewEmailFormOpen = false;
-
-    private inter: any;
-
-    constructor() {
-        console.log('CaixaDeEntradaComponent constructor...');
-    }
-
-    ngDoCheck(): void {
-        console.log('CaixaDeEntradaComponent DoCheck...');
-    }
-
-    ngOnInit(): void {
-        console.log('carregando a lista de emails....');
-    }
-
-    ngOnDestroy(): void {
-        console.log('CaixaDeEntradaComponent ngOnDestroy...');
-        console.log('limpando o intervalo')
-    }
 
     emailList: any = [];
 
