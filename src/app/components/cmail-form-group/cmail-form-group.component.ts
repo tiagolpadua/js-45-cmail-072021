@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'cmail-form-group',
@@ -10,6 +11,9 @@ export class CmailFormGroupComponent implements OnInit {
 
   textoDaLabel = '';
   idCampo = '';
+  @Input() campo: AbstractControl = new FormControl();
+
+  // @Input() hasError: boolean = false;
 
   constructor(private elemento: ElementRef) {
   }

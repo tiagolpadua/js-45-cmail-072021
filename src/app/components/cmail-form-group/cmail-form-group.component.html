@@ -1,7 +1,16 @@
 <div class="cmailInputForm">
-    <div class="mdl-textfield mdl-textfield--floating-label">
+    <div class="mdl-textfield mdl-textfield--floating-label"
+        [ngClass]="{'is-invalid': campo.invalid && campo.touched }">
         <ng-content></ng-content>
         <label class="mdl-textfield__label" [for]="idCampo"> {{ textoDaLabel }} </label>
         <span class="mdl-textfield__formline"></span>
     </div>
 </div>
+
+<!-- <div class="cmailInputForm">
+    <div class="mdl-textfield mdl-textfield--floating-label" [ngClass]="{'is-invalid': hasError }">
+        <ng-content></ng-content>
+        <label class="mdl-textfield__label" [for]="idCampo"> {{ textoDaLabel }} </label>
+        <span class="mdl-textfield__formline"></span>
+    </div>
+</div> -->
