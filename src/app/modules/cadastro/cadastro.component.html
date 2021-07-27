@@ -6,21 +6,56 @@
                 <form [formGroup]="formCadastro" (ngSubmit)="handleCadastrarUsuario()">
                     <cmail-form-group [campo]="formCadastro.get('nome')!">
                         <input formControlName="nome" autofocus required type="text" name="nome" cmailFormField>
-                        <span class="mdl-textfield__error">Informar um nome é obrigatório!</span>
+                        <div *ngIf="formCadastro.get('nome')?.errors">
+                            <!-- errors.required... -->
+                            <cmail-mensagem-erro *ngIf="formCadastro.get('nome')?.errors?.required">
+                                Informar um nome é obrigatório!
+                            </cmail-mensagem-erro>
+                            <!-- errors.minlength... -->
+                            <cmail-mensagem-erro *ngIf="formCadastro.get('nome')?.errors?.minlength">
+                                Você preencheu {{ formCadastro.get('nome')?.errors?.minlength.actualLength }} caracteres
+                                de {{ formCadastro.get('nome')?.errors?.minlength.requiredLength }}
+                            </cmail-mensagem-erro>
+                        </div>
                     </cmail-form-group>
 
                     <cmail-form-group [campo]="formCadastro.get('username')!">
                         <input formControlName="username" required type="text" name="username" cmailFormField>
-                        <span class="mdl-textfield__error">Informar um nome de usuário é obrigatório!</span>
+                        <cmail-mensagem-erro>Informar um nome de usuário é obrigatório!</cmail-mensagem-erro>
                     </cmail-form-group>
 
                     <cmail-form-group [campo]="formCadastro.get('senha')!">
                         <input formControlName="senha" required type="password" name="senha" cmailFormField>
-                        <span class="mdl-textfield__error">Informar uma senha é obrigatório!</span>
+                        <cmail-mensagem-erro>Informar uma senha é obrigatório!</cmail-mensagem-erro>
                     </cmail-form-group>
 
                     <cmail-form-group [campo]="formCadastro.get('avatar')!">
                         <input formControlName="avatar" type="text" name="avatar" cmailFormField>
+                        <cmail-mensagem-erro *ngIf="formCadastro.get('avatar')!.hasError('required')">
+                            Informar uma url com um avatar é obrigatório!
+                        </cmail-mensagem-erro>
+                        <span class="mdl-textfield__error mdl-textfield__checking"
+                            *ngIf="formCadastro.get('avatar')!.status === 'PENDING'">
+                            Validação pendente....
+                        </span>
+                        <span class="mdl-textfield__error mdl-textfield__valid"
+                            *ngIf="formCadastro.get('avatar')!.status=== 'VALID'">URL Válida
+                        </span>
+                        <cmail-mensagem-erro *ngIf="formCadastro.get('avatar')!.hasError('urlInvalida')">
+                            Erro na URL informada
+                        </cmail-mensagem-erro>
+                    </cmail-form-group>
+
+                    <cmail-form-group [campo]="formCadastro.get('telefone')!">
+                        <input formControlName="telefone" required type="text" name="telefone" cmailFormField>
+                        <div *ngIf="formCadastro.get('telefone')?.errors">
+                            <cmail-mensagem-erro *ngIf="formCadastro.get('telefone')?.errors?.required">
+                                Informar um telefone é obrigatório!
+                            </cmail-mensagem-erro>
+                            <cmail-mensagem-erro *ngIf="formCadastro.get('telefone')?.errors?.pattern">
+                                O telefone deve conter 8 ou 9 números.
+                            </cmail-mensagem-erro>
+                        </div>
                     </cmail-form-group>
 
                     <div class="mdl-card__actions">

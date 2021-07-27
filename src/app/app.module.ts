@@ -13,6 +13,8 @@ import { CadastroComponent } from './modules/cadastro/cadastro.component';
 import { CaixaDeEntradaComponent } from './modules/caixa-de-entrada/caixa-de-entrada.component';
 import { LoginComponent } from './modules/login/login.component';
 import { CmailCardComponent } from './components/cmail-card/cmail-card.component';
+import { MensagemErroComponent } from './components/mensagem-erro/mensagem-erro.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -26,13 +28,15 @@ import { CmailCardComponent } from './components/cmail-card/cmail-card.component
     CmailConfirmButtonDirective,
     CmailConfButtonDirective,
     CmailConfirmButtonComponent,
-    CmailCardComponent
+    CmailCardComponent,
+    MensagemErroComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ModuloRoteamento,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
