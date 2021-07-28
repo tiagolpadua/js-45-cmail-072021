@@ -1,9 +1,11 @@
-import { HttpClient, HttpResponseBase } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponseBase } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, Validators } from '@angular/forms';
-import { interval, Observable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { interval, Observable, of, Subscription } from 'rxjs';
 // import { interval, Subscription } from 'rxjs';
-import { catchError, filter, map, tap } from 'rxjs/operators';
+import { catchError, delay, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 
 
 @Component({
@@ -19,60 +21,76 @@ export class CadastroComponent implements OnInit, OnDestroy {
     username: new FormControl('', Validators.required),
     senha: new FormControl('', Validators.required),
     telefone: new FormControl('', [Validators.required, Validators.pattern('[0-9]{4}-?[0-9]{4}[0-9]?')]),
-    avatar: new FormControl('', Validators.required, (campo) => this.validaImagem(campo))
+    avatar: new FormControl('', Validators.required, (campo) => this.validaImagemDebounced(campo))
   });
 
-  constructor(private httpClient: HttpClient) {
-    // this.subs = interval(1000)
-    //   .pipe(
-    //     tap(n => console.log('antes do filter: ' + n)),
-    //     filter(n => n % 2 === 0),
-    //     map(n => n * 3),
-    //     map(n => 'O número é: ' + String(n))
-    //   )
-    //   .subscribe(n => console.log(n));
+  mensagensErro: any;
+
+  constructor(private httpClient: HttpClient, private roteador: Router) {
   }
 
   ngOnDestroy(): void {
-    // this.subs.unsubscribe();
   }
 
   ngOnInit(): void {
   }
 
   validaImagem(campoDoFormulario: AbstractControl): Observable<{ urlInvalida: boolean; } | null> {
-
-    return this.httpClient
-      .head(campoDoFormulario.value, {
-        observe: 'response'
-      })
+    return of<string>(campoDoFormulario.value)
       .pipe(
-        map(
-          (response: HttpResponseBase) =>
-            response.ok ? null : { urlInvalida: true }
-        ),
-        catchError(() => [{ urlInvalida: true }])
+        delay(500),
+        switchMap(v => this.httpClient
+          .head(v, {
+            observe: 'response'
+          })
+          .pipe(
+            map(
+              (response: HttpResponseBase) =>
+                response.ok ? null : { urlInvalida: true }
+            ),
+            catchError(() => [{ urlInvalida: true }])
+          )
+        )
       )
   }
 
   validaImagemDebounced(campoDoFormulario: AbstractControl): Observable<{ urlInvalida: boolean; } | null> {
-    return this.httpClient
-      .head(campoDoFormulario.value, {
-        observe: 'response'
-      })
-      .pipe(
-        map(
-          (response: HttpResponseBase) =>
-            response.ok ? null : { urlInvalida: true }
-        ),
-        catchError(() => [{ urlInvalida: true }])
+    return of<string>(campoDoFormulario.value).pipe(
+      delay(500),
+      switchMap(url => this.httpClient
+        .head(url, {
+          observe: 'response'
+        })
+        .pipe(
+          map(
+            (response: HttpResponseBase) =>
+              response.ok ? null : { urlInvalida: true }
+          ),
+          catchError(() => [{ urlInvalida: true }])
+        )
       )
+    );
   }
 
   handleCadastrarUsuario() {
     if (this.formCadastro.valid) {
-      console.log(this.formCadastro.value);
-      this.formCadastro.reset();
+      const userData = new User(this.formCadastro.value);
+      this.httpClient
+        .post('http://localhost:3200/users', userData)
+        .subscribe(
+          () => {
+            console.log(`Cadastrado com sucesso`);
+            this.formCadastro.reset();
+
+            setTimeout(() => {
+              this.roteador.navigate(['']);
+            }, 1000);
+          }
+          , (responseError: HttpErrorResponse) => {
+            //resposta caso existam erros!
+            this.mensagensErro = responseError.error.body
+          }
+        )
     } else {
       this.formCadastro.markAllAsTouched();
     }

@@ -2,11 +2,6 @@ import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 
-// type Email = {
-//     destinatario: string;
-//     conteudo: string;
-// }
-
 @Component({
     selector: 'cmail-caixa-de-entrada',
     templateUrl: './caixa-de-entrada.component.html',
@@ -15,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 export class CaixaDeEntradaComponent implements OnInit {
     private _isNewEmailFormOpen = false;
 
-    constructor(private httpClient: HttpClient) {
+    constructor() {
     }
 
     ngOnInit(): void {
