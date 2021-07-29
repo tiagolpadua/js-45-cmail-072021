@@ -11,17 +11,15 @@ export class CmailFormGroupComponent implements OnInit {
 
   textoDaLabel = '';
   idCampo = '';
-  @Input() campo: AbstractControl = new FormControl();
-
-  // @Input() hasError: boolean = false;
+  @Input() campo!: { invalid: boolean | null, touched: boolean | null };
 
   constructor(private elemento: ElementRef) {
   }
 
   ngOnInit(): void {
-    const campo = this.elemento.nativeElement.querySelector('input');
-    this.textoDaLabel = campo.name.replace(campo.name[0], campo.name[0].toUpperCase());
-    this.idCampo = campo.name;
+    const inputCampo = this.elemento.nativeElement.querySelector('input');
+    this.textoDaLabel = inputCampo.name.replace(inputCampo.name[0], inputCampo.name[0].toUpperCase());
+    this.idCampo = inputCampo.name;
   }
 
 }
