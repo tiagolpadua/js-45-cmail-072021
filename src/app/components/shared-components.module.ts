@@ -4,11 +4,13 @@ import { MensagemErroComponent } from './mensagem-erro/mensagem-erro.component';
 import { HeaderComponent } from './header/header.component';
 import { RouterModule } from '@angular/router';
 import { CmailFormModule } from './cmail-form-module.module';
+import { CmailListItemComponent } from './cmail-list-item/cmail-list-item.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    MensagemErroComponent],
+    MensagemErroComponent,
+    CmailListItemComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -17,7 +19,8 @@ import { CmailFormModule } from './cmail-form-module.module';
   exports: [
     HeaderComponent,
     MensagemErroComponent,
-    CmailFormModule
+    CmailFormModule,
+    CmailListItemComponent
   ]
 })
 export class SharedComponentsModule { }

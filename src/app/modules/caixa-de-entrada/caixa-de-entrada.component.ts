@@ -1,34 +1,24 @@
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { EventoCmailListItem } from 'src/app/components/cmail-list-item/cmail-list-item.component';
+import { Email } from 'src/app/models/email';
+import { EmailService } from 'src/app/services/email.service';
 
 @Component({
     selector: 'cmail-caixa-de-entrada',
     templateUrl: './caixa-de-entrada.component.html',
-    styleUrls: []
+    styles: [`
+    ul, li {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+    `]
 })
 export class CaixaDeEntradaComponent implements OnInit {
     private _isNewEmailFormOpen = false;
 
-    constructor() {
-    }
-
-    ngOnInit(): void {
-        // let emails: Email[];
-
-        // let exibeSpiner = true;
-
-        // this.httpClient.get<Email[]>('http://localhost:3000/emails')
-        //     .subscribe(
-        //         resp => emails = resp,
-        //         err => console.log('Deu erro....' + err),
-        //         () => exibeSpiner = false
-        //     );
-
-        // console.log(emails);
-    }
-
-    emailList: any = [];
+    emailList: Email[] = [];
 
     email = {
         destinatario: '',
@@ -36,26 +26,51 @@ export class CaixaDeEntradaComponent implements OnInit {
         conteudo: ''
     }
 
+    constructor(private emailService: EmailService) { }
+
+    handleRemoveEmail(eventoVaiRemover: EventoCmailListItem, emailId: string) {
+        console.log(eventoVaiRemover);
+        if (eventoVaiRemover.status === 'removing') {
+            this.emailService
+                .deletar(emailId)
+                .subscribe(
+                    res => {
+                        console.log(res);
+                        //remove o email da lista de emails depois dela ser apagada da API
+                        this.emailList = this.emailList.filter(email => email.id !== emailId);
+                    }
+                    , err => console.error(err)
+                )
+        }
+    }
+
+    ngOnInit(): void {
+        this.emailService
+            .listar()
+            .subscribe(lista => this.emailList = lista);
+    }
+
+
     get isNewEmailFormOpen() {
         return this._isNewEmailFormOpen;
     }
 
     handleNewEmail(formEmail: NgForm) {
-        console.log(formEmail);
-
         if (formEmail.invalid) {
             return;
         }
 
-        this.emailList.push(this.email);
-
-        this.email = {
-            destinatario: '',
-            assunto: '',
-            conteudo: '',
-        }
-
-        formEmail.resetForm();
+        this.emailService
+            .enviar(this.email)
+            .subscribe(
+                emailApi => {
+                    //Fazemos todas as outras operações após o OK da API
+                    this.emailList.push(emailApi)
+                    this.email = { destinatario: '', assunto: '', conteudo: '' }
+                    formEmail.reset();
+                }
+                , erro => console.error(erro)
+            )
     }
 
     mostraValor($event: any) {

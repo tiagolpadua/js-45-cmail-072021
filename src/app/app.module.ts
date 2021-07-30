@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MaiuculasPipe } from './maiuculas.pipe';
+// import { MaiuculasPipe } from './maiuculas.pipe';
 // import { ModuloRoteamento } from './app.routes';
 // import { CadastroModule } from './modules/cadastro/cadastro.module';
 // import { CaixaDeEntradaModule } from './modules/caixa-de-entrada/caixa-de-entrada.module';
@@ -11,6 +13,7 @@ import { AppComponent } from './app.component';
 @NgModule({
   declarations: [
     AppComponent,
+    MaiuculasPipe
   ],
   imports: [
     BrowserModule,
@@ -18,7 +21,7 @@ import { AppComponent } from './app.component';
     // LoginModule,
     // CaixaDeEntradaModule,
     // ModuloRoteamento
-    // HttpClientModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],
