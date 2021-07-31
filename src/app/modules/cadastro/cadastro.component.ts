@@ -6,6 +6,7 @@ import { interval, Observable, of, Subscription } from 'rxjs';
 // import { interval, Subscription } from 'rxjs';
 import { catchError, delay, filter, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
+import { PageDataService } from 'src/app/services/page-data.service';
 
 
 @Component({
@@ -26,13 +27,18 @@ export class CadastroComponent implements OnInit, OnDestroy {
 
   mensagensErro: any;
 
-  constructor(private httpClient: HttpClient, private roteador: Router) {
+  constructor(
+    private httpClient: HttpClient,
+    private roteador: Router,
+    private pageDataService: PageDataService) {
   }
 
   ngOnDestroy(): void {
   }
 
   ngOnInit(): void {
+    this.pageDataService
+      .defineTitulo('Cadastro - CMail');
   }
 
   validaImagem(campoDoFormulario: AbstractControl): Observable<{ urlInvalida: boolean; } | null> {
@@ -79,7 +85,6 @@ export class CadastroComponent implements OnInit, OnDestroy {
         .post('http://localhost:3200/users', userData)
         .subscribe(
           () => {
-            console.log(`Cadastrado com sucesso`);
             this.formCadastro.reset();
 
             setTimeout(() => {

@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaiuculasPipe } from './maiuculas.pipe';
+import { FiltroPorAssunto } from './modules/caixa-de-entrada/filtro-por-assunto.pipe';
 // import { MaiuculasPipe } from './maiuculas.pipe';
 // import { ModuloRoteamento } from './app.routes';
 // import { CadastroModule } from './modules/cadastro/cadastro.module';
@@ -24,6 +25,7 @@ import { MaiuculasPipe } from './maiuculas.pipe';
     HttpClientModule,
     AppRoutingModule
   ],
+  exports: [],
   providers: [],
   bootstrap: [AppComponent]
 })

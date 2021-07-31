@@ -23,7 +23,6 @@ export class CmailListItemComponent implements OnInit {
   }
 
   removeEmail(click: Event) {
-    console.log('Clicou no botão remover!')
     if (confirm('Tem certeza?')) {
       this.vaiRemover.emit({ status: 'removing' })
     }

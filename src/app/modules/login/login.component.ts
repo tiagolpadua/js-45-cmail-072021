@@ -4,6 +4,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDadosLogin } from 'src/app/models/IDadosLogin';
 import { LoginService } from 'src/app/services/login.service';
+import { PageDataService } from 'src/app/services/page-data.service';
 
 @Component({
   selector: 'app-login',
@@ -19,9 +20,12 @@ export class LoginComponent implements OnInit {
     password: ''
   }
 
-  constructor(private loginService: LoginService, private roteador: Router) { }
+  constructor(private loginService: LoginService, private roteador: Router, private pageDataService: PageDataService) {
+  }
 
   ngOnInit(): void {
+    this.pageDataService
+      .defineTitulo('Login - CMail');
   }
 
   handleLogin(formLogin: NgForm) {
